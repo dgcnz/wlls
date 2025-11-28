@@ -2,6 +2,13 @@
 name = "wlls"
 version = "0.1.0"
 edition = "2024"
+description = "List Obsidian wikilink targets (recursively) for selective publishing"
+license = "BSD-2-Clause-Patent"
+readme = "README.md"
+homepage = "https://github.com/dgcnz/wlls"
+repository = "https://github.com/dgcnz/wlls"
+keywords = ["obsidian", "quartz", "wikilink", "export", "cli"]
+categories = ["command-line-utilities"]
 
 [dependencies]
 anyhow = "1.0.93"
