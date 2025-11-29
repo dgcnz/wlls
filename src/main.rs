@@ -14,6 +14,9 @@ struct Cli {
     /// Recurse through linked markdown notes
     #[arg(short = 'R', long = "recursive", action = ArgAction::SetTrue)]
     recursive: bool,
+    /// Skip unresolved references instead of failing
+    #[arg(long = "skip-missing-refs", action = ArgAction::SetTrue)]
+    skip_missing_refs: bool,
     /// Path to the vault root
     vault_root: PathBuf,
     /// One or more note paths (absolute or vault-relative)
@@ -57,13 +60,21 @@ fn main() -> Result<()> {
         let refs = collect_references(&content);
 
         for raw_ref in refs {
-            let target = resolve_reference(&raw_ref, &vault_files).ok_or_else(|| {
-                anyhow!(
+            let Some(target) = resolve_reference(&raw_ref, &vault_files) else {
+                if cli.skip_missing_refs {
+                    eprintln!(
+                        "warning: skipping unresolved reference '{}' from {}",
+                        raw_ref,
+                        note.display()
+                    );
+                    continue;
+                }
+                return Err(anyhow!(
                     "could not resolve reference '{}' from {}",
                     raw_ref,
                     note.display()
-                )
-            })?;
+                ));
+            };
             let target = target
                 .canonicalize()
                 .with_context(|| format!("failed to canonicalize {}", target.display()))?;
