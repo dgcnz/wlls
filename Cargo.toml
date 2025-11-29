@@ -2,7 +2,7 @@
 name = "wlls"
 version = "0.1.0"
 edition = "2024"
-description = "List Obsidian wikilink targets (recursively) for selective publishing"
+description = "List Obsidian wikilinks recursively"
 license = "BSD-2-Clause-Patent"
 readme = "README.md"
 homepage = "https://github.com/dgcnz/wlls"
